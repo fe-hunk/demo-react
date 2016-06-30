@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import Todos from './Todos/Todos';
 import MainLayout from '../layouts/MainLayout/MainLayout';
 import {Row,Col,Button,Input,Steps} from 'antd'
+import {connect} from  'react-redux'
+import MySteps from './Steps'
 
 const style={
   main:{
@@ -10,22 +11,30 @@ const style={
     padding:'30px 20px'
   }
 }
+const Step = Steps.Step
 
-
-const App = ({ location }) => {
-  return (
-    <div style={style.main}>
-      <Row>
-        <Col span={12}>
-          <Button type="primary">提交</Button>
-        </Col>
-        <Col span={12}>
-          right
-        </Col>
-      </Row>
-    </div>
-  );
-};
+@connect(({app})=>({app}))
+@connect(({steps})=>({steps}))
+class App extends Component{
+  constructor(props){
+    super()
+  }
+  render(){
+    const {app,steps} = this.props;
+    console.log(app)
+    return(
+        <div style={style.main}>
+          <div>
+            <Row>
+              <Col span={24}>
+                <MySteps status="one"/>
+              </Col>
+            </Row>
+          </div>
+        </div>
+    )
+  }
+}
 
 App.propTypes = {
 };
