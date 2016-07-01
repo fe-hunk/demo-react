@@ -4,6 +4,7 @@
 import React, { Component, PropTypes } from 'react';
 import {Row,Col,Button,Input,Steps} from 'antd'
 import {connect} from  'react-redux'
+import update from 'react/lib/update';
 
 const Step = Steps.Step
 
@@ -11,14 +12,33 @@ const Step = Steps.Step
 class MySteps extends Component{
   constructor(props){
     super()
+    this.state = {
+      stepStatus:{
+        step1:'wait',
+        step2:'wait',
+        step3:'wait'
+      }
+    }
   }
   componentWillMount(){
+    let {steps} = this.props
+    this.setState(update(this.state, {
+        $set:{
+          mileStone:steps.mileStone,
+          stepStatus:this.reduceStatus(this.props.status)
+        }
+    }))
     console.info('componentWillMount','1')
   }
   componentWillReceiveProps({steps}){
     console.info('componentWillReceiveProps','2')
+    this.setState(update(this.state, {
+      $set:{
+        stepStatus:this.reduceStatus(steps.status)
+      }
+    }))
   }
-  shouldComponentUpdate(){
+  shouldComponentUpdate({steps}){
     console.info('shouldComponentUpdate','3')
     return true
   }
@@ -37,23 +57,47 @@ class MySteps extends Component{
   }
   reduceStatus(status){
     switch (status){
-      case 'one':
-        console.log('haha');
+      case 1:
+          console.log(1)
+        return {
+          step1:'finish',
+          step2:'wait',
+          step3:'wait'
+        }
+      case 2:
+          console.log(2)
+        return {
+          step1:'finish',
+          step2:'finish',
+          step3:'wait'
+        }
+      case 3:
+          console.log(3)
+        return {
+          step1:'finish',
+          step2:'finish',
+          step3:'process'
+        }
     }
   }
   render(){
+    console.log('render')
+    console.log(this.state)
+    console.log(this.$getState('steps'))
+    const {steps} = this.props;
+
     return(
         <Steps>
-          <Step status="finish" title="选择模板" icon="book" />
-          <Step status="process" title="编辑表单" icon="edit" />
-          <Step status="wait" title="生成表单" icon="setting" />
+          <Step status={this.state.stepStatus.step1} title={this.state.mileStone.step1} icon="book" />
+          <Step status={this.state.stepStatus.step2} title={this.state.mileStone.step2}  icon="edit" />
+          <Step status={this.state.stepStatus.step3} title={this.state.mileStone.step3}  icon="setting" />
         </Steps>
     )
   }
 }
 
 MySteps.propTypes = {
-  status:PropTypes.string.isRequired
+  status:PropTypes.number.isRequired
 };
 
 export default MySteps;
