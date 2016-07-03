@@ -25,7 +25,8 @@ class MySteps extends Component{
     this.setState(update(this.state, {
         $set:{
           mileStone:steps.mileStone,
-          stepStatus:this.reduceStatus(this.props.status)
+          stepStatus:this.reduceStatus(this.props.status),
+          status:this.props.status,
         }
     }))
     console.info('componentWillMount','1')
@@ -37,10 +38,22 @@ class MySteps extends Component{
         stepStatus:this.reduceStatus(steps.status)
       }
     }))
+    console.log(this.state)
   }
   shouldComponentUpdate({steps}){
     console.info('shouldComponentUpdate','3')
-    return true
+    let condition1 = steps.status != this.state.mileStone.step1
+    let condition2 = steps.status != this.state.status
+    //{
+    // condition1:'捕获本身改变text(this.changeStepText)',
+    // condition2:'捕获父元素改变了status(this.props.click)'
+    // }
+    if(condition1 || condition2){
+      console.log('组件将要更新')
+      return true
+    }
+    console.log('组件不会更新')
+    return false
   }
   componentWillUpdate(){
     console.info('componentWillUpdate','4')
@@ -80,6 +93,11 @@ class MySteps extends Component{
         }
     }
   }
+  changeStepText(){
+    let {steps} = this.props;
+    steps.mileStone.step1 = 'selectTemplate'
+    this.$dispatch(steps,'steps')
+  }
   render(){
     console.log('render')
     console.log(this.state)
@@ -87,11 +105,15 @@ class MySteps extends Component{
     const {steps} = this.props;
 
     return(
-        <Steps>
-          <Step status={this.state.stepStatus.step1} title={this.state.mileStone.step1} icon="book" />
-          <Step status={this.state.stepStatus.step2} title={this.state.mileStone.step2}  icon="edit" />
-          <Step status={this.state.stepStatus.step3} title={this.state.mileStone.step3}  icon="setting" />
-        </Steps>
+        <div>
+          <Steps>
+            <Step status={this.state.stepStatus.step1} title={this.state.mileStone.step1} icon="book" />
+            <Step status={this.state.stepStatus.step2} title={this.state.mileStone.step2}  icon="edit" />
+            <Step status={this.state.stepStatus.step3} title={this.state.mileStone.step3}  icon="setting" />
+          </Steps>
+          <Button onClick={::this.changeStepText}>改变一下文字</Button>
+        </div>
+
     )
   }
 }
