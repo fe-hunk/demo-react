@@ -42,7 +42,7 @@ class MySteps extends Component{
   }
   shouldComponentUpdate({steps}){
     console.info('shouldComponentUpdate','3')
-    let condition1 = steps.status != this.state.mileStone.step1
+    let condition1 = steps.mileStone.step1 != this.state.mileStone.step1
     let condition2 = steps.status != this.state.status
     //{
     // condition1:'捕获本身改变text(this.changeStepText)',
@@ -105,13 +105,16 @@ class MySteps extends Component{
     const {steps} = this.props;
 
     return(
-        <div>
+        <div style={{padding:'10px 20px',border:'solid 1px #efefef',margin:'10px 0'}}>
           <Steps>
             <Step status={this.state.stepStatus.step1} title={this.state.mileStone.step1} icon="book" />
             <Step status={this.state.stepStatus.step2} title={this.state.mileStone.step2}  icon="edit" />
             <Step status={this.state.stepStatus.step3} title={this.state.mileStone.step3}  icon="setting" />
           </Steps>
-          <Button onClick={::this.changeStepText}>改变一下文字</Button>
+          <Button onClick={::this.changeStepText}>改变文字</Button>
+          <span style={{color:'orange'}}>用shouldcomponentupdate来捕获</span>
+
+          <p>{steps.text}</p>
         </div>
 
     )

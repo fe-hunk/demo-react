@@ -53,6 +53,11 @@ class App extends Component{
     this.$dispatch('steps',steps)
     this.didChange = true
   }
+  modifyRedux(){
+    let {steps} = this.props
+    steps.text = 'hello,world'
+    this.$dispatch(steps,'steps')
+  }
 
   render(){
     const {app,steps} = this.props;
@@ -64,7 +69,11 @@ class App extends Component{
                 <MySteps status={this.state.stepStatus}/>
               </Col>
             </Row>
-            <Button onClick={::this.click}>改变</Button>
+            <Button onClick={::this.click}>改变状态</Button>
+            <span style={{color:'green'}}>父级元素改变状态,子元素用componentWillReceiveProps捕获参数改变,然后shouldComponentUpdate来判断是否改变</span>
+            <br/>
+            <Button onClick={::this.modifyRedux}>直接改变redux</Button>
+            <span style={{color:'yellowgreen'}} >看看直接改变redux渲染要走多少步</span>
           </div>
         </div>
     )

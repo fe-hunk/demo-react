@@ -16,6 +16,7 @@ const reducer = handleActions({
     step1:'选择模板',
     step2:'编辑表单',
     step3:'生成表单'
-  }
+  },
+  text:'hello'
 });
 export default reducer
