@@ -7,6 +7,13 @@ import {connect} from  'react-redux'
 import update from 'react/lib/update';
 
 const Step = Steps.Step
+function* idMaker(){
+  var index = 0;
+  while(index < 100)
+    yield index++;
+}
+
+var gen = idMaker();
 
 @connect(({steps})=>({steps}))
 class MySteps extends Component{
@@ -29,10 +36,10 @@ class MySteps extends Component{
           status:this.props.status,
         }
     }))
-    console.info('componentWillMount','1')
+    console.info('componentWillMount',gen.next().value)
   }
   componentWillReceiveProps({steps}){
-    console.info('componentWillReceiveProps','2')
+    console.info('componentWillReceiveProps',gen.next().value)
     this.setState(update(this.state, {
       $set:{
         stepStatus:this.reduceStatus(steps.status)
@@ -41,7 +48,7 @@ class MySteps extends Component{
     console.log(this.state)
   }
   shouldComponentUpdate({steps}){
-    console.info('shouldComponentUpdate','3')
+    console.info('shouldComponentUpdate',gen.next().value)
     let condition1 = steps.mileStone.step1 != this.state.mileStone.step1
     let condition2 = steps.status != this.state.status
     //{
@@ -56,17 +63,17 @@ class MySteps extends Component{
     return false
   }
   componentWillUpdate(){
-    console.info('componentWillUpdate','4')
+    console.info('componentWillUpdate',gen.next().value)
   }
   componentDidUpdate(){
-    console.info('componentDidUpdate','5')
+    console.info('componentDidUpdate',gen.next().value)
   }
   componentDidMount(){
-    console.info('componentDidMount','6')
+    console.info('componentDidMount',gen.next().value)
     this.reduceStatus(this.props.status)
   }
   componentWillUnmount(){
-    console.info('componentWillUnmount','7')
+    console.info('componentWillUnmount',gen.next().value)
   }
   reduceStatus(status){
     switch (status){
@@ -98,8 +105,10 @@ class MySteps extends Component{
     steps.mileStone.step1 = 'selectTemplate'
     this.$dispatch(steps,'steps')
   }
+
+
   render(){
-    console.log('render')
+    console.log('render child')
     console.log(this.state)
     console.log(this.$getState('steps'))
     const {steps} = this.props;

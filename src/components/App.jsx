@@ -60,6 +60,7 @@ class App extends Component{
   }
 
   render(){
+    console.log('render father')
     const {app,steps} = this.props;
     return(
         <div style={style.main}>
