@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { syncHistoryWithStore, routerReducer as routing } from 'react-router-redux';
 import reducers from '../reducers/index';
 import './index.less';
-import App from '../components/App'
+import Demo from '../components/demo'
 import * as Util from '../services/utils';
 
 
@@ -21,7 +21,7 @@ Util.entends(Component.prototype,Util);
 let render = () => {
   ReactDOM.render(
     <Provider store={store}>
-      <App/>
+      <Demo/>
     </Provider>
   , document.getElementById('root'));
 };

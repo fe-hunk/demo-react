@@ -2,6 +2,13 @@
 // - https://github.com/dora-js/dora-plugin-proxy#规则定义
 
 module.exports = {
+  '/login':{
+    status:0,
+    msg:'登录成功',
+    data:{
+
+    }
+  },
   '/api/todos': function(req, res) {
     setTimeout(function() {
       res.json({
